@@ -44,6 +44,7 @@ export interface DatepickerOptions {
   fieldId?: string;
   /** If false, barTitleIfEmpty will be disregarded and a date will always be shown. Default: true */
   useEmptyBarTitle?: boolean;
+  closeAfterSelect?: boolean // close datepicker after selecting the date
 }
 
 // Counter for calculating the auto-incrementing field ID
@@ -116,6 +117,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   addStyle: { [k: string]: any } | null;
   fieldId: string;
   useEmptyBarTitle: boolean;
+  closeAfterSelect: boolean;
   disabled: boolean;
 
   private onTouchedCallback: () => void = () => { };
@@ -192,6 +194,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.addStyle = this.options && this.options.addStyle || {};
     this.fieldId = this.options && this.options.fieldId || this.defaultFieldId;
     this.useEmptyBarTitle = this.options && 'useEmptyBarTitle' in this.options ? this.options.useEmptyBarTitle : true;
+    this.closeAfterSelect = this.options && 'closeAfterSelect' in this.options ? this.options.closeAfterSelect : true;
   }
 
   nextMonth(): void {
@@ -208,7 +211,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.date = this.days[i].date;
     this.value = this.date;
     this.init();
-    this.close();
+    this.closeAfterSelect && this.close();
   }
 
   setYear(i: number): void {
